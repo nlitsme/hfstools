@@ -35,6 +35,12 @@ GetOptions(
     "o=s"=>sub { $offset=eval($_[1]); },
 );
 my $cnid= shift || die usage();
+if (!exists $cnidmap{$cnid}) {
+    die sprintf("unknown cnid: must be one of %s\n", join(" ", keys %cnidmap));
+}
+else {
+    printf("dumping %s\n", $cnidmap{$cnid}{name});
+}
 my $parser= $cnidmap{$cnid}{parser}->new();
 # http://www.opensource.apple.com/darwinsource/10.4.9.x86/xnu-792.18.15/bsd/hfs/hfs_format.h
 #

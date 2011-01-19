@@ -4,12 +4,12 @@ use Harddisk;
 use HFSVolume;
 
 sub testrealdisk {
-    my $hd= Harddisk->new("/dev/disk0s2");
+    my $hd= Harddisk->new("/dev/rdisk0s2");
     my $vol= HFSVolume->fromdisk($hd);
 }
 
 sub testfiles {
-    my $hd= Harddisk->new("/dev/disk0s2");
+    my $hd= Harddisk->new("/dev/rdisk0s2");
     my $catalogFile= IO::File->new("cat.btree", "r") or die "cat.btree:$!\n";
     binmode $catalogFile;
     my $extentsFile= IO::File->new("extents.btree", "r") or die "extents.btree:$!\n";

@@ -4,7 +4,7 @@ $|=1;
 # see http://developer.apple.com/technotes/tn/tn1150.html
 # or http://fxr.watson.org/fxr/source/bsd/hfs/hfs_format.h?v=xnu-792
 sub opendisk {
-    open HD, '</dev/disk0s2' or die qq(disk0s2: $!);
+    open HD, '</dev/rdisk0s2' or die qq(rdisk0s2: $!);
     binmode HD;
 }
 sub closedisk {

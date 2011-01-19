@@ -18,6 +18,7 @@ GetOptions(
 my $hd= Harddisk->new($diskname);
 my %params;
 $params{volhdr}= read_file($volhdrname, binmode=>':raw') if $volhdrname;
+$params{startsector}= 0;
 my $vol= HFSVolume->new($hd, %params);
 
 if ($savehfsfules) {
