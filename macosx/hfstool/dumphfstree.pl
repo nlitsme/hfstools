@@ -1,5 +1,7 @@
 #!perl -w
 use strict;
+use FindBin;
+use lib "$FindBin::Bin";
 $|=1;
 use Dumpvalue;
 use Bitmap;
