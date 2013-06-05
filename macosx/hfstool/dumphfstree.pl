@@ -21,9 +21,6 @@ use HFSVolume;
 use HFSBtree;
 my $d= new Dumpvalue;
 
-sub usage {
-    return "Usage: dumphfstree  cnid\n";
-}
 my %cnidmap = (
     3=>{ name=>'extentsFile', parser=>'ExtentParser' },
     4=>{ name=>'catalogFile', parser=>'CatalogParser' },
@@ -32,18 +29,26 @@ my %cnidmap = (
 
 my $diskname= "/dev/rdisk0s2";
 my $offset=0;
+my $quicklist;
 GetOptions(
+    "q"=>\$quicklist,
     "disk=s"=>\$diskname,
     "o=s"=>sub { $offset=eval($_[1]); },
-);
-my $cnid= shift || die usage();
-if (!exists $cnidmap{$cnid}) {
-    die sprintf("unknown cnid: must be one of %s\n", join(" ", keys %cnidmap));
+) or die usage();
+
+my $cnid= shift;
+
+sub usage {
+    return "Usage: $0 [-disk $diskname] [-o OFFSET] <cnid> [blockids]\n";
+}
+
+if (!defined $cnid || exists $cnidmap{$cnid}) {
+    die sprintf("unknown cnid: must be one of %s\n", join(" ", map { "$_:$cnidmap{$_}{name}" } keys %cnidmap));
 }
 else {
     printf("dumping %s\n", $cnidmap{$cnid}{name});
 }
-my $parser= $cnidmap{$cnid}{parser}->new();
+my $parser= $cnidmap{$cnid}{parser}->new($quicklist);
 # http://www.opensource.apple.com/darwinsource/10.4.9.x86/xnu-792.18.15/bsd/hfs/hfs_format.h
 #
 #my @nodestats;
@@ -52,6 +57,7 @@ my $vol= HFSVolume->new($hd, startsector=>$offset/0x200);
 #print("name=$cnidmap{$cnid}{name}  $parser\n");
 my $bt= HFSBtree->new($vol->{volhdr}{$cnidmap{$cnid}{name}}, $parser);
 
+print "hfs open\n";
 if (@ARGV==0) {
 for (my $nodenr=0 ; $nodenr < $bt->{btree}{totalNodes} ; $nodenr++) {
     my $nodedata= $bt->readNode($nodenr);
@@ -86,8 +92,11 @@ else {
         $bt->dumpNode($node);
     }
 }
+print "hfs done\n";
 
-print $parser->dumpStats();
+if (!$quicklist) {
+    print $parser->dumpStats();
+}
 
 if (@ARGV) {
     $parser->getBlockBitmap()->save(shift);

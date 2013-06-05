@@ -8,7 +8,7 @@ our %types=(
     3=> { name=>"folder"}, 
     4=> { name=>"file"}, 
 );
-sub new { return bless { bitmap=>Bitmap->new() }, $_[0]; }
+sub new { return bless { bitmap=>Bitmap->new(), quicklist=>$_[1] }, $_[0]; }
 
 sub parse {
     my %x;
