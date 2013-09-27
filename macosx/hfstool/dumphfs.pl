@@ -39,5 +39,6 @@ if (@ARGV) {
 else {
     printf("\nreferenced blocks:\n");
     $bitmap->dump();
+    printf("\n");
 }
 

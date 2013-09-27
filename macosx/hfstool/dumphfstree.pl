@@ -42,8 +42,8 @@ sub usage {
     return "Usage: $0 [-disk $diskname] [-o OFFSET] <cnid> [blockids]\n";
 }
 
-if (!defined $cnid || exists $cnidmap{$cnid}) {
-    die sprintf("unknown cnid: must be one of %s\n", join(" ", map { "$_:$cnidmap{$_}{name}" } keys %cnidmap));
+if (!defined $cnid || !exists $cnidmap{$cnid}) {
+    die sprintf("unknown cnid(%s): must be one of %s\n", $cnid // "undef", join(" ", map { "$_:$cnidmap{$_}{name}" } keys %cnidmap));
 }
 else {
     printf("dumping %s\n", $cnidmap{$cnid}{name});
