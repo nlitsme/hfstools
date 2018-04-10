@@ -3,7 +3,7 @@ hfstool
 
 Tools for reading Apple HFS+ filesystem images, written in perl.
 
-Note: i wrote this about 16 years ago, in 2002, to help recovering data from a accidentally destroyed filesystem.
+Note: i wrote this about 9 years ago, in 2009, to help recovering data from a accidentally destroyed filesystem.
 
 I do not intent to improve this project any further.
 
